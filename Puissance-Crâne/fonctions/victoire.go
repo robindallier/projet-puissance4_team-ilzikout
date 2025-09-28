@@ -1,5 +1,4 @@
 package crane
-import "fmt"
 func Victoire(grille [][]int) bool {
     lignes := len(grille)
     colonnes := len(grille[0])
