@@ -1,77 +1,113 @@
 package crane
-func Victoire(grille [][]int) bool {
-    lignes := len(grille)
-    colonnes := len(grille[0])
 
-    for i := 0; i < lignes; i++ {
-        for j := 0; j < colonnes; j++ {
-            joueur := grille[i][j]
-            if joueur == 0 {
-                continue
-            }
-            if j+3 < colonnes {
-                horizontal := true
-                for k := 0; k < 4; k++ {
-                    if grille[i][j+k] != joueur {
-                        horizontal = false
-                        break
-                    }
-                }
-                if horizontal {
-                    return true
-                }
-            }
-            if i+3 < lignes {
-                vertical := true
-                for k := 0; k < 4; k++ {
-                    if grille[i+k][j] != joueur {
-                        vertical = false
-                        break
-                    }
-                }
-                if vertical {
-                    return true
-                }
-            }
-            if i+3 < lignes && j+3 < colonnes {
-                diagDesc := true
-                for k := 0; k < 4; k++ {
-                    if grille[i+k][j+k] != joueur {
-                        diagDesc = false
-                        break
-                    }
-                }
-                if diagDesc {
-                    return true
-                }
-            }
-            if i+3 < lignes && j-3 >= 0 {
-                diagAsc := true
-                for k := 0; k < 4; k++ {
-                    if grille[i+k][j-k] != joueur {
-                        diagAsc = false
-                        break
-                    }
-                }
-                if diagAsc {
-                    return true
-                }
-            }
-        }
-    }
+import (
+	"fmt"
+	"time"
+)
 
-    return false
+var VerifIndex int
+var Won int
+var LayerPlayed int
+var GG bool = false
+var LayerForDiag int
+
+func Victoire() {
+	Won = 0
+	VerifIndex = 6
+
+	for VerifIndex >= 0 {
+		if Won == 4 {
+			GG = true
+			fmt.Print(CurrentPlayer[LastPlayed].Name);WinMessage(" a gagné\n",)
+			return
+		}
+		if Grid[LayerPlayed][VerifIndex] == CurrentPlayer[LastPlayed].CouleurValue {
+			Won ++
+		} else {
+			Won = 0
+		}
+		VerifIndex -- 
+	}
+
+	if Won >= 4 {
+		GG = true
+		fmt.Print(CurrentPlayer[LastPlayed].Name);WinMessage(" a gagné\n",)
+		return
+	} 
+	Won = 0
+
+	VerifIndex = 5
+	for VerifIndex >= 0 {
+		if Won == 4 {
+			GG = true
+			fmt.Print(CurrentPlayer[LastPlayed].Name);WinMessage(" a gagné\n",)
+			return
+		}
+		if Grid[VerifIndex][ColonPlayed-1] == CurrentPlayer[LastPlayed].CouleurValue {
+			Won ++
+		} else {
+			Won = 0
+		}
+		VerifIndex --
+	}
+
+	if Won >= 4 {
+		GG = true
+		fmt.Print(CurrentPlayer[LastPlayed].Name);WinMessage(" a gagné\n",)
+		return
+	} 
+	Won = 0
+	VerifIndex = ColonPlayed -1
+	LayerForDiag = LayerPlayed
+
+	for VerifIndex < 6 && LayerForDiag < 5 {
+			VerifIndex ++
+			LayerForDiag ++
+	}
+
+	for VerifIndex >= 0 && LayerForDiag >= 0 {	
+		if Grid[LayerForDiag][VerifIndex] == CurrentPlayer[LastPlayed].CouleurValue {
+			Won ++
+		} else {
+			Won = 0
+		}
+		if Won >= 4 {
+			GG = true
+			fmt.Print(CurrentPlayer[LastPlayed].Name);WinMessage(" a gagné\n",)
+			return
+		}
+		VerifIndex --
+		LayerForDiag --
+	}
+
+	Won = 0
+	VerifIndex = ColonPlayed -1
+	LayerForDiag = LayerPlayed
+
+	for VerifIndex - 1 >= 0 && LayerForDiag + 1 <= 5 {
+			VerifIndex --
+			LayerForDiag ++
+	}
+
+	for VerifIndex <= 6 && LayerForDiag >= 0 {	
+		if Grid[LayerForDiag][VerifIndex] == CurrentPlayer[LastPlayed].CouleurValue {
+			Won ++
+		} else {
+			Won = 0
+		}
+		if Won >= 4 {
+			GG = true
+			fmt.Print(CurrentPlayer[LastPlayed].Name);WinMessage(" a gagné\n",)
+			return
+		}
+		VerifIndex ++
+		LayerForDiag --
+	}
 }
 
-// test
-
-var TestG1 = [][]int{
-    {0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 1, 2, 0, 0, 0},
-    {0, 1, 2, 2, 0, 0, 0},
-    {1, 2, 1, 1, 0, 0, 0},
-    {2, 1, 2, 1, 0, 0, 0},
+func WinMessage(S string) {
+	for _, Letter := range S {
+		fmt.Printf("%c", Letter)
+		time.Sleep(50 * time.Millisecond)
+	}
 }
-
-
