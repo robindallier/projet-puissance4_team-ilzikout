@@ -26,15 +26,20 @@ var CurrentPlayer = []*Joueur{&Joueur1, &Joueur2}
 
 var Turn int = 0
 
-func PlacerPièce() {		
-	Printgrid()
+type ViewHtml struct {
+	GridD [6][7]int
+	TurnP int
+	Joueur01 Joueur
+	Joueur02 Joueur
+}
+
+var ViewSite = ViewHtml{Grid, 1, Joueur1, Joueur2}
+
+func PlacerPièce(col int) {		
 	Layer = 5
-	fmt.Print("ou voulez vous placer votre jeton ?\n")
-	fmt.Scan(&ColonPlayed)
 	for Layer >= 0 {
-		if Grid[Layer][ColonPlayed-1] == 0 {
-			fmt.Print("vous avez placé votre jeton sur la ", ColonPlayed, "ème colone\n")
-			Grid[Layer][ColonPlayed-1] = CurrentPlayer[Turn].CouleurValue
+		if Grid[Layer][col] == 0 {
+			Grid[Layer][col] = CurrentPlayer[Turn].CouleurValue
 			LayerPlayed = Layer
 			if Turn == 0 {
 				Turn = 1
@@ -48,8 +53,11 @@ func PlacerPièce() {
 			Layer --
 		}
 	}
+
+	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2}
+
 	if Layer < 0 {
-		fmt.Print("vous ne pouvez pas placer sur cette colone\n")
+		
 	}			
 }
 
@@ -59,13 +67,6 @@ func Printgrid() {
 	}
 }
 
-func TPT() {
-	RecupName()
-	for !GG {
-		PlacerPièce()
-		Victoire()
-	}	
-}
 
 
 func RecupName() {
