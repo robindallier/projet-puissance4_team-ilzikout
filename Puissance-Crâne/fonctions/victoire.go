@@ -18,7 +18,6 @@ func Victoire() {
 	for VerifIndex >= 0 {
 		if Won == 4 {
 			GG = true
-			fmt.Print(CurrentPlayer[LastPlayed].Name);WinMessage(" a gagné\n",)
 			return
 		}
 		if Grid[LayerPlayed][VerifIndex] == CurrentPlayer[LastPlayed].CouleurValue {
@@ -31,7 +30,6 @@ func Victoire() {
 
 	if Won >= 4 {
 		GG = true
-		fmt.Print(CurrentPlayer[LastPlayed].Name);WinMessage(" a gagné\n",)
 		return
 	} 
 	Won = 0
@@ -40,10 +38,9 @@ func Victoire() {
 	for VerifIndex >= 0 {
 		if Won == 4 {
 			GG = true
-			fmt.Print(CurrentPlayer[LastPlayed].Name);WinMessage(" a gagné\n",)
 			return
 		}
-		if Grid[VerifIndex][ColonPlayed-1] == CurrentPlayer[LastPlayed].CouleurValue {
+		if Grid[VerifIndex][ColonPlayed] == CurrentPlayer[LastPlayed].CouleurValue {
 			Won ++
 		} else {
 			Won = 0
@@ -53,11 +50,10 @@ func Victoire() {
 
 	if Won >= 4 {
 		GG = true
-		fmt.Print(CurrentPlayer[LastPlayed].Name);WinMessage(" a gagné\n",)
 		return
 	} 
 	Won = 0
-	VerifIndex = ColonPlayed -1
+	VerifIndex = ColonPlayed 
 	LayerForDiag = LayerPlayed
 
 	for VerifIndex < 6 && LayerForDiag < 5 {
@@ -65,7 +61,10 @@ func Victoire() {
 			LayerForDiag ++
 	}
 
-	for VerifIndex >= 0 && LayerForDiag >= 0 {	
+	for VerifIndex >= 0 && LayerForDiag >= 0 {
+		if LayerForDiag < 0 || LayerForDiag >= 6 || VerifIndex < 0 || VerifIndex >= 7 {
+    		break
+		}
 		if Grid[LayerForDiag][VerifIndex] == CurrentPlayer[LastPlayed].CouleurValue {
 			Won ++
 		} else {
@@ -73,7 +72,6 @@ func Victoire() {
 		}
 		if Won >= 4 {
 			GG = true
-			fmt.Print(CurrentPlayer[LastPlayed].Name);WinMessage(" a gagné\n",)
 			return
 		}
 		VerifIndex --
@@ -81,12 +79,16 @@ func Victoire() {
 	}
 
 	Won = 0
-	VerifIndex = ColonPlayed -1
+	VerifIndex = ColonPlayed
 	LayerForDiag = LayerPlayed
 
 	for VerifIndex - 1 >= 0 && LayerForDiag + 1 <= 5 {
 			VerifIndex --
 			LayerForDiag ++
+			if VerifIndex == -1 {
+				VerifIndex = 0
+				break
+			}
 	}
 
 	for VerifIndex <= 6 && LayerForDiag >= 0 {	
@@ -97,7 +99,6 @@ func Victoire() {
 		}
 		if Won >= 4 {
 			GG = true
-			fmt.Print(CurrentPlayer[LastPlayed].Name);WinMessage(" a gagné\n",)
 			return
 		}
 		VerifIndex ++

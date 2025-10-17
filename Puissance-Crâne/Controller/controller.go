@@ -7,10 +7,6 @@ import (
 	"strconv"
 )
 
-func init() {
-    fmt.Println("Controller chargé !")
-}
-
 
 func renderTemplate(w http.ResponseWriter, filename string, data interface{}) {
 	tmpl := template.Must(template.ParseFiles("template/" + filename))
@@ -34,18 +30,23 @@ func About(w http.ResponseWriter, r *http.Request) {
 }
 
 func GamePage(w http.ResponseWriter, r *http.Request) {
+	var data crane.ViewHtml
+
+	if (r.FormValue("replay")) == "restart" {
+		crane.Reset()
+	} 
+	
 	if r.Method == http.MethodPost {
 		col := (r.FormValue("colonne"))
 		colInt, _ := strconv.Atoi(col)
-		crane.PlacerPièce(colInt)
-	}
-	gridForTemplate := make([][]int, len(crane.Grid))
-		for i := range crane.Grid {
-			gridForTemplate[i] = crane.Grid[i][:]
-		}
-
-	tmpl := template.Must(template.ParseFiles("template/tableau.html"))
-	tmpl.Execute(w, gridForTemplate)
+		if col != ""{
+			crane.PlacerPièce(colInt)
+			crane.ViewSite.LastPlayedHTMl = colInt +1
+		}	
+	} 
+	data = crane.ViewSite
+	
+	renderTemplate(w, "tableau.html", data)
 }
 
 func Contact(w http.ResponseWriter, r *http.Request) {

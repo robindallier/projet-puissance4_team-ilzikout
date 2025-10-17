@@ -31,11 +31,15 @@ type ViewHtml struct {
 	TurnP int
 	Joueur01 Joueur
 	Joueur02 Joueur
+	GGbis bool
+	Tour int
+	LastPlayedHTMl int
 }
 
-var ViewSite = ViewHtml{Grid, 1, Joueur1, Joueur2}
+var ViewSite = ViewHtml{Grid, 1, Joueur1, Joueur2, GG, 0, 0}
 
-func PlacerPièce(col int) {		
+func PlacerPièce(col int) {
+	ColonPlayed = col
 	Layer = 5
 	for Layer >= 0 {
 		if Grid[Layer][col] == 0 {
@@ -54,17 +58,29 @@ func PlacerPièce(col int) {
 		}
 	}
 
-	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2}
 
 	if Layer < 0 {
 		
-	}			
+	}
+	Victoire()
+	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2, GG, +1, 0}		
 }
 
-func Printgrid() {
-	for _, Ligne := range Grid {
-		fmt.Print(Ligne, "\n")
+
+func Reset() {
+	for i := range Grid {
+		for j := range Grid[i] {
+			Grid[i][j] = 0
+		}
 	}
+	for i := range ViewSite.GridD {
+		for j := range ViewSite.GridD[i] {
+			ViewSite.GridD[i][j] = 0
+		}
+	}
+	GG = false
+	Turn = 0
+	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2, GG, 0, 0} 
 }
 
 

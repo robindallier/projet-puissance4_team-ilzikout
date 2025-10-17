@@ -3,37 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <title>La grille</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <h1>Puissance 4</h1>
-    <p>caca</p>
-    <p>papa</p>
-    {{range .}}
-        <div class="row">
-            <p>cua</p>
-            {{range .}}
-            <div class="column">
-                <p>cua</p>
-                {{if eq . 1}}
-                    <div class = "jeton rouge"></div>
-                {{else if eq . 2}}
-                    <div class = "jeton jaune"></div>
-                {{else}}
-                    <div class = "jeton vide"></div>
-                {{end}}
-            </div> 
-            
-        {{end}}
-        </div>
-        
-    {{end}}
+    <style>
 
-    <a href="/">Accueil</a>
+        body {
+            background-color: aqua;
+            transition: background-color 0.5s ease;
+        }
+
+        .jeton {
+            border-radius: 50%;
+            height: 75px;
+            width: 75px;
+        }
+
+        .rouge {background-color: red;}
+        .jaune {background-color: yellow;}
+        .vide {
+            background-color: rgb(51, 49, 49);
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgb(69, 64, 64);
+            padding: 5px;
+            width: 100%;
+            height: auto;
+        }
+        .AlBout {
+            width: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .Boutton {
+            display: flex;
+            justify-self: center;
+            width: 100%;
+            justify-content: space-around;
+            gap : 50px;
+        }
+        .container {
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            justify-self: center;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 50%;
+            height: auto;
+            gap: 10px;
+            background-color: rgb(69, 64, 64);
+            padding: 10px;
+        }
+        .Djaune {
+           background-color: rgb(83, 83, 23);
+           transition: background-color 2s ease;
+        }
+        .Drouge {
+             background-color: rgb(119, 25, 25);
+             transition: background-color 2s ease;
+        }
+        .Gg {
+            display: flex;
+            justify-self: center;
+            align-self: center;
+        }
+        .restart {
+            display: flex;
+            justify-self: center;
+            align-self: center;
+            background-color: gray;
+            height: 30px;
+            width: 300px;
+        }
+
+    </style>
+</head>
+{{if not .GGbis}}
+<body class="{{if  eq .TurnP 0}}Djaune{{else}}Drouge{{end}}" >
+    <h1>Puissance 4</h1>
+    <p>{{.LastPlayedHTMl}}</p>
+     <a href="/">Accueil</a>
     <a href="/about">À propos</a>
     <a href="/contact">Contact</a>
     <a href="/tableau">puissance 4</a>
-
+    <div class="AlBout">
+         <label>Nom Joueur 1 :</label><br>
+        <input type="text" name="Nom Joueur 1"> <br><br>
+        <label>Nom Joueur 2 :</label><br>
+        <textarea name="Nom Joueur 2"></textarea><br><br>
+        <button type="submit">valider</button>
+        <div class="Boutton">
+            <form action="/tableau" method="post">
+                <button type="submit" name="colonne" value="0">1</button>
+                <button type="submit" name="colonne" value="1">2</button>
+                <button type="submit" name="colonne" value="2">3</button>
+                <button type="submit" name="colonne" value="3">4</button>
+                <button type="submit" name="colonne" value="4">5</button>
+                <button type="submit" name="colonne" value="5">6</button>
+                <button type="submit" name="colonne" value="6">7</button>
+            </form>
+        </div>
+        <div class="container">
+            {{range .GridD}}   
+                <div class="row">
+                    {{range .}}
+                        {{if eq . 1}}
+                            <div class = "jeton rouge"></div>
+                        {{else if eq . 2}}
+                            <div class = "jeton jaune"></div>
+                        {{else}}
+                            <div class = "jeton vide"></div>
+                        {{end}}
+                    {{end}}
+                </div>   
+            {{end}}
+        </div>
+    </div>
+    {{else}}
+        <h1 class="GG">Victoire</h1>
+        <a href="/">Accueil</a>
+        <a href="/about">À propos</a>
+        <a href="/contact">Contact</a>
+        <a href="/tableau">puissance 4</a>
+        <div class="restart">
+            <form action="/tableau" method="post">
+                <button type="submit" name="replay" value="restart"><h2>VOULEZ VOUS RECOMENCER ?</h2></button>
+            </form>
+        </div>  
+    {{end}}
     
 </body>
 </html>
