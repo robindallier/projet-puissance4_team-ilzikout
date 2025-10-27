@@ -1,6 +1,5 @@
 package crane
 
-import "fmt"
 
 type Joueur struct {
 	Name string
@@ -85,9 +84,4 @@ func Reset() {
 
 
 
-func RecupName() {
-	fmt.Print("Donnez le nom du joueur 1\n")
-	fmt.Scan(&Joueur1.Name)
-	fmt.Print("Donnez le nom du joueur 2\n")
-	fmt.Scan(&Joueur2.Name)
-}
+

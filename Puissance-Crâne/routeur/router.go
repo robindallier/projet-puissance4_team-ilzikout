@@ -2,7 +2,7 @@ package routeur
 
 import (
 	"net/http"
-	"power4/controller"
+	controller "power4/controller"
 )
 
 func New() *http.ServeMux {

@@ -11,15 +11,20 @@
         }
 
         .jeton {
-            border-radius: 50%;
             height: 75px;
-            width: 75px;
+            width: auto;
+            border-radius: 50%;
+            
         }
 
-        .rouge {background-color: red;}
-        .jaune {background-color: yellow;}
         .vide {
             background-color: rgb(51, 49, 49);
+            
+        }
+
+        .krane{
+            height: 75px;
+            width: auto; 
         }
 
         .row {
@@ -93,12 +98,12 @@
      <a href="/">Accueil</a>
     <a href="/about">À propos</a>
     <a href="/contact">Contact</a>
-    <a href="/tableau">puissance 4</a>
+    <a href="/table au">puissance 4</a>
     <div class="AlBout">
          <label>Nom Joueur 1 :</label><br>
-        <input type="text" name="Nom Joueur 1"> <br><br>
+        <input type="text" name="nj1"> <br><br>
         <label>Nom Joueur 2 :</label><br>
-        <textarea name="Nom Joueur 2"></textarea><br><br>
+        <input type="text" name="nj2"><br><br>
         <button type="submit">valider</button>
         <div class="Boutton">
             <form action="/tableau" method="post">
@@ -116,9 +121,10 @@
                 <div class="row">
                     {{range .}}
                         {{if eq . 1}}
-                            <div class = "jeton rouge"></div>
+                            <div class = "krane"> <img src="kavtiv.jpg"></div>
                         {{else if eq . 2}}
-                            <div class = "jeton jaune"></div>
+                            <div class = "krane"> 
+                                <img src="firas.jpg"></div>
                         {{else}}
                             <div class = "jeton vide"></div>
                         {{end}}
