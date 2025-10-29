@@ -210,9 +210,9 @@ header:hover {
     <a href="/contact">Contact</a>
     <a href="/tableau">puissance 4</a><br></br><br></br>
     <div class="AlBout">
-         <p>Tour de : <span id="joueur-actuel">Joueur 1</span></p>
+         <p>C'est au tour de : <span id="joueur-actuel">Joueur 1</span></p>
 
-<!-- Champs de saisie -->
+
 <label>Nom Joueur 1 :</label><br>
 <input type="text" id="nj1" name="nj1" placeholder="Nom du joueur 1"><br><br>
 
@@ -266,70 +266,49 @@ header:hover {
         </div>  
     {{end}}
 <script>
-    // Récupérer ou initialiser les noms
-    let nomJ1 = localStorage.getItem('nomJ1') || '';
-    let nomJ2 = localStorage.getItem('nomJ2') || '';
+let nomJ1 = "";
+let nomJ2 = "";
+let joueurActuel = "";
 
-    // Fonction : Valider les noms
-    function validerNoms() {
-        const inputJ1 = document.getElementById("nj1").value.trim();
-        const inputJ2 = document.getElementById("nj2").value.trim();
 
-        nomJ1 = inputJ1 || "Joueur 1";
-        nomJ2 = inputJ2 || "Joueur 2";
+function validerNoms() {
+  nomJ1 = document.getElementById("nj1").value.trim();
+  nomJ2 = document.getElementById("nj2").value.trim();
 
-        // Sauvegarder dans localStorage
-        localStorage.setItem('nomJ1', nomJ1);
-        localStorage.setItem('nomJ2', nomJ2);
+  if (!nomJ1 || !nomJ2) {
+    alert("⚠️ Veuillez entrer les noms des deux joueurs !");
+    return;
+  }
 
-        // Masquer les inputs
-        document.getElementById("nj1").style.display = 'none';
-        document.getElementById("nj2").style.display = 'none';
-        document.querySelector('label[for="nj1"]').style.display = 'none';
-        document.querySelector('label[for="nj2"]').style.display = 'none';
-        document.querySelector('button[onclick="validerNoms()"]').style.display = 'none';
+  joueurActuel = nomJ1;
+  document.getElementById("joueur-actuel").textContent = joueurActuel;
+  alert(`✅ Les noms ont été enregistrés ! ${joueurActuel} commence.`);
+}
 
-        // Mettre à jour l'affichage immédiatement
-        mettreAJourJoueurActuel();
-    }
 
-    // Fonction : Mettre à jour le nom du joueur actuel
-    function mettreAJourJoueurActuel() {
-        const turn = {{.TurnP}}; // 0 = J1, 1 = J2 (vient du Go)
-        const joueur = (turn === 0) ? nomJ1 : nomJ2;
-        document.getElementById("joueur-actuel").textContent = joueur;
-    }
+function changerDeJoueur() {
+  if (!nomJ1 || !nomJ2) return;
 
-    // Au chargement de la page
-    window.onload = function() {
-        // Pré-remplir les inputs si les noms existent déjà
-        if (nomJ1) document.getElementById("nj1").value = nomJ1;
-        if (nomJ2) document.getElementById("nj2").value = nomJ2;
+  joueurActuel = (joueurActuel === nomJ1) ? nomJ2 : nomJ1;
+  document.getElementById("joueur-actuel").textContent = joueurActuel;
+}
 
-        // Si les noms sont déjà définis → masquer les inputs
-        if (nomJ1 && nomJ2) {
-            document.getElementById("nj1").style.display = 'none';
-            document.getElementById("nj2").style.display = 'none';
-            document.querySelectorAll('label').forEach(l => {
-                if (l.textContent.includes('Nom Joueur')) l.style.display = 'none';
-            });
-            document.querySelector('button[onclick="validerNoms()"]').style.display = 'none';
-        }
 
-        // Mettre à jour le joueur actuel
-        mettreAJourJoueurActuel();
+document.addEventListener("DOMContentLoaded", () => {
+  const boutonsColonnes = document.querySelectorAll(".Boutton button");
 
-        // Intercepter TOUS les clics sur les boutons de colonne
-        const form = document.getElementById("game-form");
-        form.addEventListener("submit", function(e) {
-            // Avant d'envoyer → sauvegarder les noms (au cas où)
-            const currentJ1 = document.getElementById("nj1").value.trim() || nomJ1 || "Joueur 1";
-            const currentJ2 = document.getElementById("nj2").value.trim() || nomJ2 || "Joueur 2";
-            localStorage.setItem('nomJ1', currentJ1);
-            localStorage.setItem('nomJ2', currentJ2);
-        });
-    };
+  boutonsColonnes.forEach(bouton => {
+    bouton.addEventListener("click", event => {
+      event.preventDefault(); 
+      changerDeJoueur();
+      document.body.classList.toggle("Djaune");
+document.body.classList.toggle("Drouge");
+    });
+  });
+});
 </script>
+
+
 
 
 <!-- <p style="font-size: 20px;"><strong>C’est au tour de {{.CurrentPlayer}} de jouer !</strong></p> -->
