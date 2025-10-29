@@ -10,11 +10,14 @@ var Won int
 var LayerPlayed int
 var GG bool = false
 var LayerForDiag int
+var DrawIndex int
 
 func Victoire() {
 	Won = 0
 	VerifIndex = 6
-
+	if DrawIndex == 42 && Won == 0{
+		fmt.Print("Match nul")
+	}
 	for VerifIndex >= 0 {
 		if Won == 4 {
 			GG = true
