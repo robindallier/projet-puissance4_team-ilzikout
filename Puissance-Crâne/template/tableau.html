@@ -6,7 +6,7 @@
     <style>
 
         body {
-            background-color: aqua;
+            background-color: rgba(130, 235, 235, 0.527);
             transition: background-color 0.5s ease;
         }
 
@@ -64,11 +64,11 @@
             padding: 10px;
         }
         .Djaune {
-           background-color: rgb(83, 83, 23);
+           background-color: rgb(236, 215, 55);
            transition: background-color 2s ease;
         }
         .Drouge {
-             background-color: rgb(119, 25, 25);
+             background-color: rgb(225, 40, 40);
              transition: background-color 2s ease;
         }
         .Gg {
@@ -101,6 +101,7 @@
         <label>Nom Joueur 2 :</label><br>
         <input type="text" name="nj2"><br><br>
         <button type="submit">valider</button>
+        
         <div class="Boutton">
             <form action="/tableau" method="post">
                 <button type="submit" name="colonne" value="0">1</button>
@@ -141,6 +142,7 @@
             </form>
         </div>  
     {{end}}
-    
+ 
+<p><strong>C’est au tour de {{.CurrentPlayer}} de jouer !</strong></p>
 </body>
 </html>

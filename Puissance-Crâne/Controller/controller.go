@@ -1,11 +1,11 @@
 package crane
+
 import (
 	"html/template"
 	"net/http"
 	crane "power4/fonctions"
 	"strconv"
 )
-
 
 func renderTemplate(w http.ResponseWriter, filename string, data interface{}) {
 	tmpl := template.Must(template.ParseFiles("template/" + filename))
@@ -14,8 +14,8 @@ func renderTemplate(w http.ResponseWriter, filename string, data interface{}) {
 
 func Home(w http.ResponseWriter, r *http.Request) {
 	data := map[string]string{
-		"Title":   "Accueil",      
-		"Message": "Bienvenue sur la page d'accueil 🎉", 
+		"Title":   "Accueil",
+		"Message": "Bienvenue sur la page d'accueil 🎉",
 	}
 	renderTemplate(w, "index.html", data)
 }
@@ -33,32 +33,32 @@ func GamePage(w http.ResponseWriter, r *http.Request) {
 
 	if (r.FormValue("replay")) == "restart" {
 		crane.Reset()
-	} 
-	
+	}
+
 	if r.Method == http.MethodPost {
 		col := (r.FormValue("colonne"))
 		colInt, _ := strconv.Atoi(col)
-		if col != ""{
+		if col != "" {
 			crane.PlacerPièce(colInt)
-			crane.ViewSite.LastPlayedHTMl = colInt +1
-		}	
-	} 
+			crane.ViewSite.LastPlayedHTMl = colInt + 1
+		}
+	}
 	data = crane.ViewSite
-	
+
 	renderTemplate(w, "tableau.html", data)
 }
 
 func Contact(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost { 
-		name := r.FormValue("name") 
-		msg := r.FormValue("msg") 
+	if r.Method == http.MethodPost {
+		name := r.FormValue("name")
+		msg := r.FormValue("msg")
 
 		data := map[string]string{
 			"Title":   "Contact",
-			"Message": "Merci " + name + " pour ton message : " + msg, 
+			"Message": "Merci " + name + " pour ton message : " + msg,
 		}
 		renderTemplate(w, "contact.html", data)
-		return 
+		return
 	}
 	data := map[string]string{
 		"Title":   "Contact",
@@ -68,11 +68,21 @@ func Contact(w http.ResponseWriter, r *http.Request) {
 }
 
 func RecupName(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost { 
+	if r.Method == http.MethodPost {
 		name1 := r.FormValue("nj1")
 		crane.Joueur1.Name = name1
-		name2  := r.FormValue("nj2")
+		name2 := r.FormValue("nj2")
 		crane.Joueur2.Name = name2
 	}
-	
+
+}
+
+func RecupName(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		name1 := r.FormValue("nj1")
+		crane.Joueur1.Name = name1
+		name2 := r.FormValue("nj2")
+		crane.Joueur2.Name = name2
+	}
+
 }
