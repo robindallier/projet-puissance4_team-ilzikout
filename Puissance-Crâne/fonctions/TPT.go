@@ -7,7 +7,7 @@ type Joueur struct {
 	Victoires    int
 }
 
-var Joueur1 = Joueur{"Jaune", "_", 1, 0}
+var Joueur1 = Joueur{"Jaune", "_", 1, 5}
 var Joueur2 = Joueur{"Rouge", "_", 2, 0}
 
 var JRouge int = 1
@@ -33,21 +33,18 @@ type ViewHtml struct {
 	IsDraw         bool
 	Tour           int
 	LastPlayedHTMl int
+	CurrentPlayer  string
+	Named			bool
 }
 
-var ViewSite = ViewHtml{Grid, 1, Joueur1, Joueur2, GG, false, 0, 0}
+var DrawCount int
 
-func IsDraw() bool {
-	for i := 0; i < 7; i++ {
-		if Grid[0][i] == 0 {
-			return false
-		}
-	}
-	return true
-}
+var ViewSite = ViewHtml{Grid, 1, Joueur1, Joueur2, GG, false, 0, 0, CurrentPlayer[Turn].Name, false}
+
+var Draw bool = false
 
 func PlacerPièce(col int) {
-	DrawIndex += 1
+	DrawCount ++
 	ColonPlayed = col
 	Layer = 5
 	for Layer >= 0 {
@@ -67,12 +64,17 @@ func PlacerPièce(col int) {
 		}
 	}
 
-	if Layer < 0 {
-
+	if DrawCount == 42 {
+		Draw = true
+	} else {
+		Draw = false
 	}
+
 	Victoire()
-	isDraw := IsDraw()
-	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2, GG, isDraw, +1, 0}
+	if GG {
+		CurrentPlayer[LastPlayed].Victoires ++
+	}
+	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2, GG, Draw, +1, 0, CurrentPlayer[Turn].Name, true}
 }
 
 func Reset() {
@@ -88,5 +90,24 @@ func Reset() {
 	}
 	GG = false
 	Turn = 0
-	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2, GG, false, 0, 0}
+	Joueur1.Victoires = 0
+	Joueur2.Victoires = 0
+	ViewSite.Named = false
+	ViewSite = ViewHtml{Grid, 1, Joueur1, Joueur2, GG, false, 0, 0, CurrentPlayer[Turn].Name, false}
+}
+
+func Restart() {
+	for i := range Grid {
+		for j := range Grid[i] {
+			Grid[i][j] = 0
+		}
+	}
+	for i := range ViewSite.GridD {
+		for j := range ViewSite.GridD[i] {
+			ViewSite.GridD[i][j] = 0
+		}
+	}
+	GG = false
+	Turn = 0
+	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2, GG, false, 0, 0, CurrentPlayer[Turn].Name, true}
 }

@@ -30,19 +30,35 @@ func About(w http.ResponseWriter, r *http.Request) {
 
 func GamePage(w http.ResponseWriter, r *http.Request) {
 	var data crane.ViewHtml
-
-	if (r.FormValue("replay")) == "restart" {
+	
+	if (r.FormValue("replay")) == "reset" {
 		crane.Reset()
+		crane.ViewSite.Named = false
+		renderTemplate(w, "tableau.html", data)
+		return
+	} else {
+		if (r.FormValue("replay")) == "restart" {
+			crane.Restart()
+		}
 	}
 
-	if r.Method == http.MethodPost {
+	if r.Method == http.MethodPost && crane.ViewSite.Named{
 		col := (r.FormValue("colonne"))
 		colInt, _ := strconv.Atoi(col)
 		if col != "" {
 			crane.PlacerPièce(colInt)
 			crane.ViewSite.LastPlayedHTMl = colInt + 1
 		}
+	} else {
+		name1 := r.FormValue("nj1")
+		name2 := r.FormValue("nj2")
+		crane.Joueur1.Name = name1
+		crane.Joueur2.Name = name2
+		if r.Method == http.MethodPost {
+			crane.ViewSite.Named = true
+		}	
 	}
+	data = crane.ViewSite
 
 	renderTemplate(w, "tableau.html", data)
 }
@@ -66,12 +82,3 @@ func Contact(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "contact.html", data)
 }
 
-func RecupName(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost {
-		name1 := r.FormValue("nj1")
-		crane.Joueur1.Name = name1
-		name2 := r.FormValue("nj2")
-		crane.Joueur2.Name = name2
-	}
-
-}

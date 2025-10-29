@@ -4,6 +4,50 @@
     <meta charset="UTF-8">
     <title>{{.Title }}</title>
 </head>
+<style>body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    text-align: center;
+    padding: 30px;
+    background-image: url("gradient_1920_1080.png");
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background: linear-gradient(to right, red, orange, yellow);
+    height: 100vh;
+    margin: 0;
+}               
+
+header {
+    width: 100%;
+    padding: 20px 40px; 
+    color: black;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    text-align: center;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 30px;
+}
+
+header:hover {
+  background-color: rgba(255, 255, 255); 
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  opacity: 0.5;
+}
+
+img{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
+.bas-droite {
+      position: fixed;
+      bottom: 10px;  
+      right: 10px;   
+    }</style>
 <body>
 <h1>{{ .Title }}</h1>
 <p>{{ .Message }}</p>
@@ -13,7 +57,24 @@
     <a href="/contact">Contact</a>
     <a href="/tableau">puissance 4</a>
 
-    <p>bonjour a tous</p>
+    <p style="color: aqua;font-size: 35px;">Bienvenue chez Timilzikout, une équipe passionnée par le code, la créativité et les défis ! 💻🔥
+Notre objectif ? Allier esprit d’équipe, innovation et bonne humeur pour donner vie à des projets originaux, comme notre propre version du Puissance 4 !
+
+Chez Timilzikout, on aime apprendre, expérimenter et surtout s’amuser tout en progressant.
+Chaque membre apporte sa touche unique, et ensemble, on transforme les idées en réalisations concrètes.</p><br><br><br>
+        <p style="color: aqua;font-size: 35px;">
+<strong style="background-color: rgb(255, 255, 255);color: darksalmon;">
+Issa</strong> <br>
+Se concentre sur la logique et la programmation, principalement en Go. Il aime résoudre des problèmes et faire fonctionner les choses correctement.<br><br><br><br>
+
+<strong style="background-color: rgb(255, 255, 255);color: darksalmon;">
+Elias</strong> <br>
+
+S’occupe de l’aspect visuel et esthétique, en travaillant surtout avec HTML, CSS  pour rendre les interfaces agréables à utiliser.<br><br><br><br>
+
+<strong style="background-color: rgb(255, 255, 255);color: darksalmon;">Robin</strong><br>
+
+Apporte son savoir-faire et sa rigueur, principalement en Go, pour que les projets avancent sans accrocs.</p><br><br><br><br>
 </nav>
 </body>
 </html>
