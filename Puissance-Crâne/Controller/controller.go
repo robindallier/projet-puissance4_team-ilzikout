@@ -1,4 +1,4 @@
-package crane
+package controller
 
 import (
 	"html/template"

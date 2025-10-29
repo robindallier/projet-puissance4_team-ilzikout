@@ -30,11 +30,21 @@ type ViewHtml struct {
 	Joueur01       Joueur
 	Joueur02       Joueur
 	GGbis          bool
+	IsDraw         bool
 	Tour           int
 	LastPlayedHTMl int
 }
 
-var ViewSite = ViewHtml{Grid, 1, Joueur1, Joueur2, GG, 0, 0}
+var ViewSite = ViewHtml{Grid, 1, Joueur1, Joueur2, GG, false, 0, 0}
+
+func IsDraw() bool {
+	for i := 0; i < 7; i++ {
+		if Grid[0][i] == 0 {
+			return false
+		}
+	}
+	return true
+}
 
 func PlacerPièce(col int) {
 	DrawIndex += 1
@@ -61,7 +71,8 @@ func PlacerPièce(col int) {
 
 	}
 	Victoire()
-	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2, GG, +1, 0}
+	isDraw := IsDraw()
+	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2, GG, isDraw, +1, 0}
 }
 
 func Reset() {
@@ -77,5 +88,5 @@ func Reset() {
 	}
 	GG = false
 	Turn = 0
-	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2, GG, 0, 0}
+	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2, GG, false, 0, 0}
 }

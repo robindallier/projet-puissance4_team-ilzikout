@@ -14,14 +14,19 @@
             height: 75px;
             width: 75px;
             border-radius: 50%;
-
-        
-            
-            
         }
 
-        .rouge {
+        .vide{
+            background-color: rgb(51, 49, 49);
+        }
+            
+        .rouge{
             background-color: red;
+
+        }
+        
+        .jaune{
+            background-color: yellow;
         }
         
         .jaune{
@@ -196,18 +201,8 @@ header:hover {
 </head>
 {{if not .GGbis}}
 <body class="{{if  eq .TurnP 0}}Djaune{{else}}Drouge{{end}}" >
-    <p>Tour de : <span id="joueur-actuel">Joueur 1</span></p>
-
-<script>
-let turn = 1; 
-
-function changeTurn() {
-    turn = turn === 1 ? 2 : 1;
-    document.getElementById("joueur-actuel").textContent = "Joueur " + turn;
-}
 
 
-</script>
     <header><h1>Puissance 4</h1></header>
     <p>{{.LastPlayedHTMl}}</p><br></br><br></br><br></br><br></br>
      <a href="/">Accueil</a>
@@ -215,11 +210,17 @@ function changeTurn() {
     <a href="/contact">Contact</a>
     <a href="/tableau">puissance 4</a><br></br><br></br>
     <div class="AlBout">
-         <label>Nom Joueur 1 :</label><br>
-        <input type="text" name="nj1"> <br><br>
-        <label>Nom Joueur 2 :</label><br>
-        <input type="text" name="nj2"><br><br>
-        <button type="submit">valider</button>
+         <p>Tour de : <span id="joueur-actuel">Joueur 1</span></p>
+
+<!-- Champs de saisie -->
+<label>Nom Joueur 1 :</label><br>
+<input type="text" id="nj1" name="nj1" placeholder="Nom du joueur 1"><br><br>
+
+<label>Nom Joueur 2 :</label><br>
+<input type="text" id="nj2" name="nj2" placeholder="Nom du joueur 2"><br><br>
+
+<button type="button" onclick="validerNoms()">Valider</button>
+
         
         <div class="Boutton">
             <form action="/tableau" method="post">
@@ -237,7 +238,7 @@ function changeTurn() {
                 <div class="row">
                     {{range .}}
                         {{if eq . 1}}
-                            <div class = "jeton rouge"></div>
+                            <div class = "jeton rouge"> </div>
                         {{else if eq . 2}}
                             <div class = "jeton jaune"></div>
                         {{else}}
@@ -249,18 +250,87 @@ function changeTurn() {
         </div>
     </div>
     {{else}}
-        <h1 class="GG">Victoire</h1>
+        {{if .IsDraw}}
+            <h1 class="GG">Match nul !</h1>
+        {{else}}
+            <h1 class="GG">Victoire</h1>
+        {{end}}
         <a href="/">Accueil</a>
         <a href="/about">À propos</a>
         <a href="/contact">Contact</a>
         <a href="/tableau">puissance 4</a>
         <div style="background-color: transparent;" class="restart">
             <form action="/tableau" method="post"><br><br><br><br><br><br>
-                <button style="width: auto;height: auto;" type="submit" name="replay" value="restart" ><h2>VOULEZ VOUS RECOMENCER ?</h2></button>
+                <button style="width: auto;height: auto;" type="submit" name="replay" value="restart" ><h2>VOULEZ VOUS RECOMMENCER ?</h2></button>
             </form>
         </div>  
     {{end}}
- 
+<script>
+    // Récupérer ou initialiser les noms
+    let nomJ1 = localStorage.getItem('nomJ1') || '';
+    let nomJ2 = localStorage.getItem('nomJ2') || '';
+
+    // Fonction : Valider les noms
+    function validerNoms() {
+        const inputJ1 = document.getElementById("nj1").value.trim();
+        const inputJ2 = document.getElementById("nj2").value.trim();
+
+        nomJ1 = inputJ1 || "Joueur 1";
+        nomJ2 = inputJ2 || "Joueur 2";
+
+        // Sauvegarder dans localStorage
+        localStorage.setItem('nomJ1', nomJ1);
+        localStorage.setItem('nomJ2', nomJ2);
+
+        // Masquer les inputs
+        document.getElementById("nj1").style.display = 'none';
+        document.getElementById("nj2").style.display = 'none';
+        document.querySelector('label[for="nj1"]').style.display = 'none';
+        document.querySelector('label[for="nj2"]').style.display = 'none';
+        document.querySelector('button[onclick="validerNoms()"]').style.display = 'none';
+
+        // Mettre à jour l'affichage immédiatement
+        mettreAJourJoueurActuel();
+    }
+
+    // Fonction : Mettre à jour le nom du joueur actuel
+    function mettreAJourJoueurActuel() {
+        const turn = {{.TurnP}}; // 0 = J1, 1 = J2 (vient du Go)
+        const joueur = (turn === 0) ? nomJ1 : nomJ2;
+        document.getElementById("joueur-actuel").textContent = joueur;
+    }
+
+    // Au chargement de la page
+    window.onload = function() {
+        // Pré-remplir les inputs si les noms existent déjà
+        if (nomJ1) document.getElementById("nj1").value = nomJ1;
+        if (nomJ2) document.getElementById("nj2").value = nomJ2;
+
+        // Si les noms sont déjà définis → masquer les inputs
+        if (nomJ1 && nomJ2) {
+            document.getElementById("nj1").style.display = 'none';
+            document.getElementById("nj2").style.display = 'none';
+            document.querySelectorAll('label').forEach(l => {
+                if (l.textContent.includes('Nom Joueur')) l.style.display = 'none';
+            });
+            document.querySelector('button[onclick="validerNoms()"]').style.display = 'none';
+        }
+
+        // Mettre à jour le joueur actuel
+        mettreAJourJoueurActuel();
+
+        // Intercepter TOUS les clics sur les boutons de colonne
+        const form = document.getElementById("game-form");
+        form.addEventListener("submit", function(e) {
+            // Avant d'envoyer → sauvegarder les noms (au cas où)
+            const currentJ1 = document.getElementById("nj1").value.trim() || nomJ1 || "Joueur 1";
+            const currentJ2 = document.getElementById("nj2").value.trim() || nomJ2 || "Joueur 2";
+            localStorage.setItem('nomJ1', currentJ1);
+            localStorage.setItem('nomJ2', currentJ2);
+        });
+    };
+</script>
+
 
 <!-- <p style="font-size: 20px;"><strong>C’est au tour de {{.CurrentPlayer}} de jouer !</strong></p> -->
 </body>
