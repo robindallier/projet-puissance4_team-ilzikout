@@ -43,7 +43,6 @@ func GamePage(w http.ResponseWriter, r *http.Request) {
 			crane.ViewSite.LastPlayedHTMl = colInt + 1
 		}
 	}
-	data = crane.ViewSite
 
 	renderTemplate(w, "tableau.html", data)
 }
@@ -65,16 +64,6 @@ func Contact(w http.ResponseWriter, r *http.Request) {
 		"Message": "Envoie-nous un message 📩",
 	}
 	renderTemplate(w, "contact.html", data)
-}
-
-func RecupName(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost {
-		name1 := r.FormValue("nj1")
-		crane.Joueur1.Name = name1
-		name2 := r.FormValue("nj2")
-		crane.Joueur2.Name = name2
-	}
-
 }
 
 func RecupName(w http.ResponseWriter, r *http.Request) {

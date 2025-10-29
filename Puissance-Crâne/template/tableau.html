@@ -6,7 +6,7 @@
     <style>
 
         body {
-            background-color: rgba(130, 235, 235, 0.527);
+            background-color: rgba(97, 238, 238, 0.841);
             transition: background-color 0.5s ease;
         }
 
@@ -64,11 +64,11 @@
             padding: 10px;
         }
         .Djaune {
-           background-color: rgb(236, 215, 55);
+           background-color: rgb(255, 255, 0);
            transition: background-color 2s ease;
         }
         .Drouge {
-             background-color: rgb(225, 40, 40);
+             background-color: rgb(225, 0, 0);
              transition: background-color 2s ease;
         }
         .Gg {
@@ -84,17 +84,124 @@
             height: 30px;
             width: 300px;
         }
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    text-align: center;
+    padding: 30px;
+    background-image: url("gradient_1920_1080.png");
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 
+}        
+
+header {
+    width: 100%;
+    padding: 20px 40px; 
+    color: black;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    text-align: center;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 30px;
+}
+
+header:hover {
+  background-color: rgba(255, 255, 255); 
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  opacity: 0.5;
+}
+
+img{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
+.bas-droite {
+      position: fixed;
+      bottom: 10px;  
+      right: 10px;   
+    }
+
+h1 {
+    color: #333;
+}
+
+h2{
+    text-align: left;
+}
+
+a {
+    color: cyan;
+}
+
+
+.red {
+    background-color: red;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+button{
+    width: 70px;
+    height: 70px;
+}
+
+.tableau-style{
+    border-collapse:collapse;
+    min-width: 400px;
+    width: auto;
+    box-shadow: 0 5 50px rgba(0, 0, 0, 0.15);
+    margin: 100px auto;
+}
+
+header {
+    width: 100%;
+    padding: 20px 40px; 
+    color: black;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    text-align: center;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 30px;
+}
+
+header:hover {
+  background-color: rgba(255, 255, 255); 
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  opacity: 0.5;
+}
     </style>
 </head>
 {{if not .GGbis}}
 <body class="{{if  eq .TurnP 0}}Djaune{{else}}Drouge{{end}}" >
-    <h1>Puissance 4</h1>
-    <p>{{.LastPlayedHTMl}}</p>
+    <p>Tour de : <span id="joueur-actuel">Joueur 1</span></p>
+
+<script>
+let turn = 1; 
+
+function changeTurn() {
+    turn = turn === 1 ? 2 : 1;
+    document.getElementById("joueur-actuel").textContent = "Joueur " + turn;
+}
+
+
+</script>
+    <header><h1>Puissance 4</h1></header>
+    <p>{{.LastPlayedHTMl}}</p><br></br><br></br><br></br><br></br>
      <a href="/">Accueil</a>
     <a href="/about">À propos</a>
     <a href="/contact">Contact</a>
-    <a href="/table au">puissance 4</a>
+    <a href="/tableau">puissance 4</a><br></br><br></br>
     <div class="AlBout">
          <label>Nom Joueur 1 :</label><br>
         <input type="text" name="nj1"> <br><br>
@@ -118,10 +225,10 @@
                 <div class="row">
                     {{range .}}
                         {{if eq . 1}}
-                            <div class = "krane"> <img src="kavtiv.jpg"></div>
+                            <div class = "krane"> <img src="/Puissance-Crâne/template/kavtiv.jpg"></div>
                         {{else if eq . 2}}
                             <div class = "krane"> 
-                                <img src="firas.jpg"></div>
+                                <img src="/Puissance-Crâne/template/firas.jpg"></div>
                         {{else}}
                             <div class = "jeton"></div>
                         {{end}}
@@ -136,13 +243,14 @@
         <a href="/about">À propos</a>
         <a href="/contact">Contact</a>
         <a href="/tableau">puissance 4</a>
-        <div class="restart">
-            <form action="/tableau" method="post">
-                <button type="submit" name="replay" value="restart"><h2>VOULEZ VOUS RECOMENCER ?</h2></button>
+        <div style="background-color: transparent;" class="restart">
+            <form action="/tableau" method="post"><br><br><br><br><br><br>
+                <button style="width: auto;height: auto;" type="submit" name="replay" value="restart" ><h2>VOULEZ VOUS RECOMENCER ?</h2></button>
             </form>
         </div>  
     {{end}}
  
-<p><strong>C’est au tour de {{.CurrentPlayer}} de jouer !</strong></p>
+
+<!-- <p style="font-size: 20px;"><strong>C’est au tour de {{.CurrentPlayer}} de jouer !</strong></p> -->
 </body>
 </html>
