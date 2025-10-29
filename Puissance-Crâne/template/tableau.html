@@ -77,7 +77,15 @@
              background-color: rgb(225, 40, 40);
              transition: background-color 2s ease;
         }
-        .Gg {
+
+         .Ejaune {
+           color: rgb(134, 127, 75);
+        }
+        .Erouge {
+             color: rgb(102, 52, 52);
+        }
+
+        .GG {
             display: flex;
             justify-self: center;
             align-self: center;
@@ -91,67 +99,107 @@
             width: 300px;
         }
 
+        .spacing{
+            padding: 20px;
+            margin-left: 40px;
+            margin-right: 40px;
+        }
+
+        .Scores{
+            background-color: gray;
+            display: flex;
+            align-items: row;
+            width: auto;
+            outline: solid white;
+        }
+
+        .Ligne {
+            display: flex;
+            align-items: column;
+            outline: solid white;
+        }
+
     </style>
 </head>
 {{if not .GGbis}}
 <body class="{{if  eq .TurnP 0}}Djaune{{else}}Drouge{{end}}" >
     <h1>Puissance 4</h1>
-    <p>{{.LastPlayedHTMl}}</p>
      <a href="/">Accueil</a>
     <a href="/about">À propos</a>
     <a href="/contact">Contact</a>
-    <a href="/table au">puissance 4</a>
+    <a href="/tableau">puissance 4</a>
     <div class="AlBout">
-         <label>Nom Joueur 1 :</label><br>
-        <input type="text" name="nj1"> <br><br>
-        <label>Nom Joueur 2 :</label><br>
-        <input type="text" name="nj2"><br><br>
-        <button type="submit">valider</button>
-        
-        <div class="Boutton">
-            <form action="/tableau" method="post">
-                <button type="submit" name="colonne" value="0">1</button>
-                <button type="submit" name="colonne" value="1">2</button>
-                <button type="submit" name="colonne" value="2">3</button>
-                <button type="submit" name="colonne" value="3">4</button>
-                <button type="submit" name="colonne" value="4">5</button>
-                <button type="submit" name="colonne" value="5">6</button>
-                <button type="submit" name="colonne" value="6">7</button>
+        {{if not .Named}}
+            <form method="post" action="/tableau">
+                <label>Nom Joueur 1 :</label><br>
+                <input type="text" name="nj1"> <br><br>
+                <label>Nom Joueur 2 :</label><br>
+                <input type="text" name="nj2"><br><br>
+                <button type="submit">Envoyer</button>
             </form>
-        </div>
-        <div class="container">
-            {{range .GridD}}   
-                <div class="row">
-                    {{range .}}
-                        {{if eq . 1}}
-                            <div class = "jeton rouge"> </div>
-                        {{else if eq . 2}}
-                            <div class = "jeton jaune"></div>
-                        {{else}}
-                            <div class = "jeton vide"></div>
+                
+        {{end}}
+        {{if .Named}}
+        <p><strong>C’est au tour de <div class="{{if  eq .TurnP 0}}Ejaune{{else}}Erouge{{end}}">{{.CurrentPlayer}}</div> de jouer !</strong></p>
+            <div class="Boutton">
+                <form action="/tableau" method="post">
+                    <button class="spacing" type="submit" name="colonne" value="0">⬇️</button>
+                    <button class="spacing"  type="submit" name="colonne" value="1">⬇️</button>
+                    <button class="spacing"  type="submit" name="colonne" value="2">⬇️</button>
+                    <button class="spacing"  type="submit" name="colonne" value="3">⬇️</button>
+                    <button class="spacing"  type="submit" name="colonne" value="4">⬇️</button>
+                    <button class="spacing"  type="submit" name="colonne" value="5">⬇️</button>
+                    <button class="spacing"  type="submit" name="colonne" value="6">⬇️</button>
+                </form>
+            </div>
+            <div class="container">
+                {{range .GridD}}   
+                    <div class="row">
+                        {{range .}}
+                            {{if eq . 1}}
+                                <div class = "jeton rouge"></div>
+                            {{else if eq . 2}}
+                                <div class = "jeton jaune"></div>
+                            {{else}}
+                                <div class = "jeton vide"></div>
+                            {{end}}
                         {{end}}
-                    {{end}}
-                </div>   
-            {{end}}
-        </div>
+                    </div>   
+                {{end}}
+            </div>
+        {{end}}
     </div>
     {{else}}
         {{if .IsDraw}}
             <h1 class="GG">Match nul !</h1>
         {{else}}
-            <h1 class="GG">Victoire</h1>
+            <h1 class="GG">Victoire !</h1>
         {{end}}
         <a href="/">Accueil</a>
         <a href="/about">À propos</a>
         <a href="/contact">Contact</a>
         <a href="/tableau">puissance 4</a>
         <div class="restart">
+            <div class="Scores">
+                <div class="Ligne">
+                    <div class="J1">
+                        <p><strong>{{.Joueur01.Name}}</strong></p>
+                        <p><strong>{{.Joueur01.Victoires}}</strong></p>
+                    </div>
+                </div>
+                <div class="Ligne">
+                    <div class="J2">
+                        <p><strong>{{.Joueur02.Name}}</strong></p>
+                        <p><strong>{{.Joueur02.Victoires}}</strong></p>
+                    </div>
+                </div>   
+            </div>
             <form action="/tableau" method="post">
-                <button type="submit" name="replay" value="restart"><h2>VOULEZ VOUS RECOMENCER ?</h2></button>
+                <button type="submit" name="replay" value="reset"><h2>VOULEZ VOUS RECOMENCER A ZERO ?</h2></button>
+                <button type="submit" name="replay" value="restart"><h2>VOULEZ VOUS RECOMENCER AVEC LES MÊMES JOUEURS ?</h2></button>
             </form>
         </div>  
     {{end}}
- 
-<p><strong>C’est au tour de {{.CurrentPlayer}} de jouer !</strong></p>
+
 </body>
 </html>
