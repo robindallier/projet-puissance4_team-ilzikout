@@ -1,11 +1,10 @@
 package crane
 
-
 type Joueur struct {
-	Name string
-	Couleur string
+	Name         string
+	Couleur      string
 	CouleurValue int
-	Victoires int
+	Victoires    int
 }
 
 var Joueur1 = Joueur{"Jaune", "_", 1, 0}
@@ -16,7 +15,7 @@ var JJaune int = 2
 
 var LastPlayed int
 
-var Grid[6][7]int
+var Grid [6][7]int
 
 var ColonPlayed int
 var Layer int = 5
@@ -26,16 +25,26 @@ var CurrentPlayer = []*Joueur{&Joueur1, &Joueur2}
 var Turn int = 0
 
 type ViewHtml struct {
-	GridD [6][7]int
-	TurnP int
-	Joueur01 Joueur
-	Joueur02 Joueur
-	GGbis bool
-	Tour int
+	GridD          [6][7]int
+	TurnP          int
+	Joueur01       Joueur
+	Joueur02       Joueur
+	GGbis          bool
+	IsDraw         bool
+	Tour           int
 	LastPlayedHTMl int
 }
 
-var ViewSite = ViewHtml{Grid, 1, Joueur1, Joueur2, GG, 0, 0}
+var ViewSite = ViewHtml{Grid, 1, Joueur1, Joueur2, GG, false, 0, 0}
+
+func IsDraw() bool {
+	for i := 0; i < 7; i++ {
+		if Grid[0][i] == 0 {
+			return false
+		}
+	}
+	return true
+}
 
 func PlacerPièce(col int) {
 	ColonPlayed = col
@@ -53,18 +62,17 @@ func PlacerPièce(col int) {
 			}
 			break
 		} else {
-			Layer --
+			Layer--
 		}
 	}
 
-
 	if Layer < 0 {
-		
+
 	}
 	Victoire()
-	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2, GG, +1, 0}		
+	isDraw := IsDraw()
+	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2, GG, isDraw, +1, 0}
 }
-
 
 func Reset() {
 	for i := range Grid {
@@ -79,9 +87,5 @@ func Reset() {
 	}
 	GG = false
 	Turn = 0
-	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2, GG, 0, 0} 
+	ViewSite = ViewHtml{Grid, Turn, Joueur1, Joueur2, GG, false, 0, 0}
 }
-
-
-
-

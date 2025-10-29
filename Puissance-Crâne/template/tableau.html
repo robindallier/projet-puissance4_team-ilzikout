@@ -136,7 +136,11 @@
         </div>
     </div>
     {{else}}
-        <h1 class="GG">Victoire</h1>
+        {{if .IsDraw}}
+            <h1 class="GG">Match nul !</h1>
+        {{else}}
+            <h1 class="GG">Victoire</h1>
+        {{end}}
         <a href="/">Accueil</a>
         <a href="/about">À propos</a>
         <a href="/contact">Contact</a>
